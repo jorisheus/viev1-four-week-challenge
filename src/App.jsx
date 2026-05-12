@@ -200,7 +200,7 @@ export default function ChallengePlanner() {
       {/* Header */}
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:20 }}>
         <div>
-          <div style={{ fontSize:11, ...S.mono, letterSpacing:3, color:"#9ca3af", textTransform:"uppercase", marginBottom:4 }}>Viev1 · 4 Weken Challenge</div>
+          <div style={{ fontSize:11, ...S.mono, letterSpacing:3, color:"#9ca3af", textTransform:"uppercase", marginBottom:4 }}><a href="https://www.viev1.nl/" target="_blank">Viev1</a> · 4 Weken Challenge</div>
           <div style={{ display:"flex", alignItems:"baseline", gap:8 }}>
             <span style={{ fontSize:26, fontWeight:700, color:"#111827", letterSpacing:-1 }}>
               {DAY_NAMES[date.getDay()]} {date.getDate()} {MONTH_NAMES[date.getMonth()]}
@@ -351,9 +351,9 @@ export default function ChallengePlanner() {
         </div>
       )}
 
-      <div style={{ textAlign:"center", marginTop:24, fontSize:10, color:"#d1d5db", ...S.mono, letterSpacing:2 }}>
-        VIEV1 · PERSONALTRAINING-NOORDWIJK.NL
-      </div>
+      <a href="https://www.viev1.nl/" target="_blank" style={{ textAlign:"center", marginTop:24, fontSize:10, color:"#d1d5db", ...S.mono, letterSpacing:2 }}>
+        VIEV1 · www.viev1.nl
+      </a>
     </div>
   );
 }
