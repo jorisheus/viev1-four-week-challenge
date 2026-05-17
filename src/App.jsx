@@ -57,54 +57,107 @@ const food = [
   ]},
 ];
 
-const workouts = [
-  { type:"Upper body", tag:"Dag 1", color:"#2563eb", bg:"#eff6ff", exercises:[
-    {name:"Push-ups",sets:"3×10",q:"push ups exercise tutorial"},
-    {name:"Incline push-ups",sets:"3×8",q:"incline push-ups exercise"},
-    {name:"Plank shoulder taps",sets:"3×20",q:"plank shoulder taps"},
-    {name:"High to low plank",sets:"3×8",q:"high to low plank exercise"},
-    {name:"Bench dips",sets:"3×10",q:"bench dips triceps"},
-    {name:"Short run interval",sets:"3×",q:"short run interval training"},
-  ]},
-  { type:"Lower body", tag:"Dag 2", color:"#7c3aed", bg:"#f5f3ff", exercises:[
-    {name:"Squats",sets:"3×12",q:"squat exercise tutorial"},
-    {name:"Backstep lunges",sets:"3×10/been",q:"reverse lunge exercise"},
-    {name:"Glute hipbridge",sets:"3×12",q:"glute bridge exercise"},
-    {name:"Calf raises",sets:"3×15",q:"calf raise exercise"},
-    {name:"Burpee",sets:"3×6",q:"burpee exercise tutorial"},
-  ]},
-  { type:"HIIT interval", tag:"Dag 3", color:"#dc2626", bg:"#fef2f2", note:"30 sec werk / 20 sec rust · 4 rondes", exercises:[
-    {name:"Jumping jacks",sets:"30s",q:"jumping jacks exercise"},
-    {name:"Mountain climbers",sets:"30s",q:"mountain climbers exercise"},
-    {name:"High knees",sets:"30s",q:"high knees exercise"},
-    {name:"Plank jacks",sets:"30s",q:"plank jacks exercise"},
-    {name:"Plyo jumps",sets:"30s",q:"plyometric jump squats"},
-  ]},
-  { type:"Upper body", tag:"Dag 4 · Duinen", color:"#2563eb", bg:"#eff6ff", exercises:[
-    {name:"Push-ups",sets:"4×8",q:"push ups exercise tutorial"},
-    {name:"Cameleon push-ups",sets:"4×6",q:"chameleon push-up tutorial"},
-    {name:"Tricep dips",sets:"4×10",q:"tricep dips exercise"},
-    {name:"High to low plank",sets:"3×10 LR",q:"high to low plank exercise"},
-    {name:"Plank",sets:"3×45 sec",q:"plank exercise tutorial"},
-    {name:"Short / uphill run",sets:"",q:"uphill run interval sprints"},
-  ]},
-  { type:"Lower body", tag:"Dag 5", color:"#7c3aed", bg:"#f5f3ff", exercises:[
-    {name:"Squats",sets:"4×10",q:"squat exercise tutorial"},
-    {name:"Step-ups",sets:"3×10",q:"step-ups exercise tutorial"},
-    {name:"Wall sit",sets:"3×30 sec",q:"wall sit exercise"},
-    {name:"Knee to feet",sets:"3×10 LR",q:"knee to feet exercise"},
-    {name:"Inch worm",sets:"3×6",q:"inchworm exercise tutorial"},
-  ]},
-  { type:"Full body circuit", tag:"Dag 6", color:"#059669", bg:"#ecfdf5", note:"3 rondes", exercises:[
-    {name:"Cameleon push-ups",sets:"3×10",q:"chameleon push-up tutorial"},
-    {name:"Squats",sets:"3×15",q:"squat exercise tutorial"},
-    {name:"Mountain climbers",sets:"3×60",q:"mountain climbers exercise"},
-    {name:"Plank",sets:"3×45 sec",q:"plank exercise tutorial"},
-    {name:"Crunches",sets:"3×30",q:"crunches exercise tutorial"},
-    {name:"Bicycle crunch",sets:"3×50",q:"bicycle crunch exercise"},
-    {name:"Burpee",sets:"3×8",q:"burpee exercise tutorial"},
-  ]},
-  { type:"Rust & herstel", tag:"Dag 7", color:"#6b7280", bg:"#f9fafb", exercises:[] },
+// workoutsByWeek[0] = week 1, workoutsByWeek[1] = week 2, weeks 3-4 reuse week 2
+const workoutsByWeek = [
+  // ── WEEK 1 ──────────────────────────────────────────────────────────────
+  [
+    { type:"Upper body", tag:"Dag 1", color:"#2563eb", bg:"#eff6ff", exercises:[
+      {name:"Push-ups",sets:"3×10",q:"push ups exercise tutorial"},
+      {name:"Incline push-ups",sets:"3×8",q:"incline push-ups exercise"},
+      {name:"Plank shoulder taps",sets:"3×20",q:"plank shoulder taps"},
+      {name:"High to low plank",sets:"3×8",q:"high to low plank exercise"},
+      {name:"Bench dips",sets:"3×10",q:"bench dips triceps"},
+      {name:"Short run interval",sets:"3×",q:"short run interval training"},
+    ]},
+    { type:"Lower body", tag:"Dag 2", color:"#7c3aed", bg:"#f5f3ff", exercises:[
+      {name:"Squats",sets:"3×12",q:"squat exercise tutorial"},
+      {name:"Backstep lunges",sets:"3×10/been",q:"reverse lunge exercise"},
+      {name:"Glute hipbridge",sets:"3×12",q:"glute bridge exercise"},
+      {name:"Calf raises",sets:"3×15",q:"calf raise exercise"},
+      {name:"Burpee",sets:"3×6",q:"burpee exercise tutorial"},
+    ]},
+    { type:"HIIT interval", tag:"Dag 3", color:"#dc2626", bg:"#fef2f2", note:"30 sec werk / 20 sec rust · 4 rondes", exercises:[
+      {name:"Jumping jacks",sets:"30s",q:"jumping jacks exercise"},
+      {name:"Mountain climbers",sets:"30s",q:"mountain climbers exercise"},
+      {name:"High knees",sets:"30s",q:"high knees exercise"},
+      {name:"Plank jacks",sets:"30s",q:"plank jacks exercise"},
+      {name:"Plyo jumps",sets:"30s",q:"plyometric jump squats"},
+    ]},
+    { type:"Upper body", tag:"Dag 4 · Duinen", color:"#2563eb", bg:"#eff6ff", exercises:[
+      {name:"Push-ups",sets:"4×8",q:"push ups exercise tutorial"},
+      {name:"Cameleon push-ups",sets:"4×6",q:"chameleon push-up tutorial"},
+      {name:"Tricep dips",sets:"4×10",q:"tricep dips exercise"},
+      {name:"High to low plank",sets:"3×10 LR",q:"high to low plank exercise"},
+      {name:"Plank",sets:"3×45 sec",q:"plank exercise tutorial"},
+      {name:"Short / uphill run",sets:"",q:"uphill run interval sprints"},
+    ]},
+    { type:"Lower body", tag:"Dag 5", color:"#7c3aed", bg:"#f5f3ff", exercises:[
+      {name:"Squats",sets:"4×10",q:"squat exercise tutorial"},
+      {name:"Step-ups",sets:"3×10",q:"step-ups exercise tutorial"},
+      {name:"Wall sit",sets:"3×30 sec",q:"wall sit exercise"},
+      {name:"Knee to feet",sets:"3×10 LR",q:"knee to feet exercise"},
+      {name:"Inch worm",sets:"3×6",q:"inchworm exercise tutorial"},
+    ]},
+    { type:"Full body circuit", tag:"Dag 6", color:"#059669", bg:"#ecfdf5", note:"3 rondes", exercises:[
+      {name:"Cameleon push-ups",sets:"3×10",q:"chameleon push-up tutorial"},
+      {name:"Squats",sets:"3×15",q:"squat exercise tutorial"},
+      {name:"Mountain climbers",sets:"3×60",q:"mountain climbers exercise"},
+      {name:"Plank",sets:"3×45 sec",q:"plank exercise tutorial"},
+      {name:"Crunches",sets:"3×30",q:"crunches exercise tutorial"},
+      {name:"Bicycle crunch",sets:"3×50",q:"bicycle crunch exercise"},
+      {name:"Burpee",sets:"3×8",q:"burpee exercise tutorial"},
+    ]},
+    { type:"Rust & herstel", tag:"Dag 7", color:"#6b7280", bg:"#f9fafb", exercises:[] },
+  ],
+  // ── WEEK 2 ──────────────────────────────────────────────────────────────
+  [
+    { type:"Upper body", tag:"Dag 1 · Strand", color:"#2563eb", bg:"#eff6ff", exercises:[
+      {name:"Small grip push-ups",sets:"3×6",q:"close grip push-ups exercise"},
+      {name:"Decline push-ups",sets:"3×6/8",q:"decline push-ups exercise"},
+      {name:"Plank shoulder taps",sets:"3×30",q:"plank shoulder taps"},
+      {name:"Tricep dips",sets:"3×12",q:"tricep dips exercise"},
+      {name:"Burpee",sets:"3×8",q:"burpee exercise tutorial"},
+    ]},
+    { type:"Lower body", tag:"Dag 2", color:"#7c3aed", bg:"#f5f3ff", note:"Finisher: Squatjumps 4×30 sec (15 sec rust)", exercises:[
+      {name:"Squats",sets:"4×20",q:"squat exercise tutorial"},
+      {name:"Knee to feet",sets:"4×12/been",q:"knee to feet exercise"},
+      {name:"Glute hipbridge",sets:"4×20",q:"glute bridge exercise"},
+      {name:"Crunches",sets:"3×20",q:"crunches exercise tutorial"},
+      {name:"Superman back extension",sets:"3×15",q:"superman back extension exercise"},
+      {name:"Sideplank hip dips",sets:"2×20 LR",q:"side plank hip dips exercise"},
+    ]},
+    { type:"HIIT interval", tag:"Dag 3", color:"#dc2626", bg:"#fef2f2", note:"45 sec werk / 20 sec rust · 3 rondes · Finisher: Stairs run 10× (12+ treden)", exercises:[
+      {name:"Jumping jacks",sets:"45s",q:"jumping jacks exercise"},
+      {name:"High knees",sets:"45s",q:"high knees exercise"},
+      {name:"Plank jacks",sets:"45s",q:"plank jacks exercise"},
+      {name:"Mountain climbers",sets:"45s",q:"mountain climbers exercise"},
+      {name:"Inch worm + push-up",sets:"45s",q:"inchworm push-up exercise"},
+    ]},
+    { type:"Upper body · TRX", tag:"Dag 4 · Duinen", color:"#2563eb", bg:"#eff6ff", note:"10:15 Duindamse slag Piet Florisdal · Finisher: Decline push-up to the max", exercises:[
+      {name:"TRX Crunches",sets:"3×12",q:"TRX crunches exercise"},
+      {name:"TRX Row",sets:"3×10",q:"TRX row exercise"},
+      {name:"TRX Shoulders",sets:"3×10",q:"TRX shoulder exercise"},
+      {name:"TRX Tricep extension",sets:"3×10",q:"TRX tricep extension"},
+      {name:"TRX Chest press",sets:"3×10",q:"TRX chest press exercise"},
+    ]},
+    { type:"Lower & Upper body", tag:"Dag 5", color:"#7c3aed", bg:"#f5f3ff", note:"Finisher: Jumping lunges 60 sec", exercises:[
+      {name:"Squats",sets:"3×20",q:"squat exercise tutorial"},
+      {name:"Backstep lunges",sets:"3×10 LR",q:"reverse lunge exercise"},
+      {name:"Inch worm",sets:"3×10",q:"inchworm exercise tutorial"},
+      {name:"Plank shoulder taps",sets:"3×30",q:"plank shoulder taps"},
+      {name:"Jackknife crunch",sets:"3×10",q:"jackknife crunch exercise"},
+      {name:"Bicycle crunch",sets:"3×30",q:"bicycle crunch exercise"},
+    ]},
+    { type:"Full body circuit", tag:"Dag 6", color:"#059669", bg:"#ecfdf5", note:"3 rondes · Finisher: 5 min nonstop slow run", exercises:[
+      {name:"Cameleon push-ups",sets:"3×10",q:"chameleon push-up tutorial"},
+      {name:"Decline mountain climbers",sets:"3×60",q:"decline mountain climbers exercise"},
+      {name:"Plank",sets:"3×60 sec",q:"plank exercise tutorial"},
+      {name:"Tricep dips",sets:"3×25",q:"tricep dips exercise"},
+      {name:"Superman back extension",sets:"3×15",q:"superman back extension exercise"},
+      {name:"Burpee",sets:"3×8",q:"burpee exercise tutorial"},
+    ]},
+    { type:"Rust & herstel", tag:"Dag 7", color:"#6b7280", bg:"#f9fafb", exercises:[] },
+  ],
 ];
 
 const DAY_NAMES = ["zo","ma","di","wo","do","vr","za"];
@@ -166,8 +219,9 @@ export default function ChallengePlanner() {
   const week = Math.floor(offset / 7) + 1;
   const foodDay = (offset % 3) + 1;
   const workoutIdx = Math.min(offset % 7, 6);
+  const weekIdx = Math.min(week - 1, workoutsByWeek.length - 1);
   const fd = food[foodDay - 1];
-  const wo = workouts[workoutIdx];
+  const wo = workoutsByWeek[weekIdx][workoutIdx];
   const showVariaties = week >= 2;
 
   const todayOffset = (() => {
