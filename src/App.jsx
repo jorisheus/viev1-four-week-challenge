@@ -28,6 +28,26 @@ function pickOther(arr, excludeIdx) {
   return choices[Math.floor(Math.random() * choices.length)];
 }
 
+const PICK_CATS = [
+  { key:"upper", label:"Upper body", color:"#2563eb" },
+  { key:"lower", label:"Lower body", color:"#7c3aed" },
+  { key:"hiit",  label:"HIIT",       color:"#dc2626" },
+  { key:"full",  label:"Full body",  color:"#059669" },
+];
+
+function workoutCat(type) {
+  const t = type.toLowerCase();
+  if (t.includes("hiit")) return "hiit";
+  if (t.includes("upper") && !t.includes("lower")) return "upper";
+  if (t.includes("lower") && !t.includes("upper")) return "lower";
+  if (t.includes("rust")) return null;
+  return "full";
+}
+
+const allPickableWorkouts = workoutsByWeek.flatMap((week, wi) =>
+  week.map((wo, di) => ({ ...wo, weekNum: wi + 1, dayNum: di + 1, cat: workoutCat(wo.type) }))
+).filter(w => w.cat !== null && w.exercises.length > 0);
+
 export default function ChallengePlanner() {
   const [startStr, setStartStr] = useState(() => {
     try { return localStorage.getItem("challenge_start") || DEFAULT_START; } catch { return DEFAULT_START; }
@@ -37,6 +57,8 @@ export default function ChallengePlanner() {
   const [offset, setOffset] = useState(0);
   const [tab, setTab] = useState("food");
   const [varIdx, setVarIdx] = useState({});
+  const [pickType, setPickType] = useState("upper");
+  const [expanded, setExpanded] = useState(null);
 
   const startDate = parseLocalDate(startStr);
 
@@ -45,6 +67,8 @@ export default function ChallengePlanner() {
     const diff = daysBetween(startDate, today);
     setOffset(Math.max(0, Math.min(27, diff)));
     setVarIdx({});
+    const done = diff > 27;
+    setTab(t => t === "workout" && done ? "pick" : t === "pick" && !done ? "food" : t);
   }, [startStr]);
 
   function saveStart() {
@@ -73,6 +97,10 @@ export default function ChallengePlanner() {
     return Math.max(0, Math.min(27, daysBetween(startDate, today)));
   })();
   const isToday = offset === todayOffset;
+  const isDone = (() => {
+    const today = new Date(); today.setHours(0,0,0,0);
+    return daysBetween(startDate, today) > 27;
+  })();
 
   function shuffle(mealIdx, varKey, cat) {
     const k = `${mealIdx}_${varKey}`;
@@ -103,7 +131,10 @@ export default function ChallengePlanner() {
             <span style={{ fontSize:26, fontWeight:700, color:"#111827", letterSpacing:-1 }}>
               {DAY_NAMES[date.getDay()]} {date.getDate()} {MONTH_NAMES[date.getMonth()]}
             </span>
-            {isToday && <span style={{ fontSize:11, background:"#111827", color:"#fff", borderRadius:4, padding:"2px 7px", ...S.mono, letterSpacing:1 }}>VANDAAG</span>}
+            {isDone
+              ? <span style={{ fontSize:11, background:"#059669", color:"#fff", borderRadius:4, padding:"2px 7px", ...S.mono, letterSpacing:1 }}>FREE MODE</span>
+              : isToday && <span style={{ fontSize:11, background:"#111827", color:"#fff", borderRadius:4, padding:"2px 7px", ...S.mono, letterSpacing:1 }}>VANDAAG</span>
+            }
           </div>
         </div>
         <button onClick={() => { setTempStart(startStr); setShowSettings(s=>!s); }}
@@ -132,35 +163,40 @@ export default function ChallengePlanner() {
         </div>
       )}
 
-      {/* Week strip */}
-      <div style={{ display:"flex", gap:3, marginBottom:20 }}>
-        {Array.from({length:28}).map((_,i) => (
-          <div key={i} onClick={()=>{ setOffset(i); setVarIdx({}); }}
-            style={{ flex:1, height:28, borderRadius:4, cursor:"pointer",
-              background: i===offset?"#111827": i<offset?"#d1d5db":"#e5e7eb",
-              display:"flex", alignItems:"center", justifyContent:"center",
-              fontSize:9, color:i===offset?"#fff":"#6b7280", ...S.mono }}>
-            {i%7===0 ? `W${Math.floor(i/7)+1}` : ""}
+      {/* Week strip + Nav — hidden in free mode */}
+      {!isDone && (
+        <>
+          <div style={{ display:"flex", gap:3, marginBottom:20 }}>
+            {Array.from({length:28}).map((_,i) => (
+              <div key={i} onClick={()=>{ setOffset(i); setVarIdx({}); }}
+                style={{ flex:1, height:28, borderRadius:4, cursor:"pointer",
+                  background: i===offset?"#111827": i<offset?"#d1d5db":"#e5e7eb",
+                  display:"flex", alignItems:"center", justifyContent:"center",
+                  fontSize:9, color:i===offset?"#fff":"#6b7280", ...S.mono }}>
+                {i%7===0 ? `W${Math.floor(i/7)+1}` : ""}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-
-      {/* Nav */}
-      <div style={{ display:"flex", gap:8, marginBottom:20 }}>
-        <button onClick={()=>navigate(-1)} disabled={offset===0}
-          style={{ flex:1, padding:"10px 0", border:"1.5px solid #e5e7eb", borderRadius:8, background:"#fff", fontSize:18, cursor:offset===0?"default":"pointer", opacity:offset===0?0.3:1 }}>←</button>
-        <button onClick={()=>{ setOffset(todayOffset); setVarIdx({}); }}
-          style={{ flex:2, padding:"10px 0", border:"1.5px solid #111827", borderRadius:8, background:isToday?"#111827":"#fff", color:isToday?"#fff":"#111827", fontSize:13, ...S.mono, letterSpacing:1, cursor:"pointer" }}>
-          VANDAAG
-        </button>
-        <button onClick={()=>navigate(1)} disabled={offset===27}
-          style={{ flex:1, padding:"10px 0", border:"1.5px solid #e5e7eb", borderRadius:8, background:"#fff", fontSize:18, cursor:offset===27?"default":"pointer", opacity:offset===27?0.3:1 }}>→</button>
-      </div>
+          <div style={{ display:"flex", gap:8, marginBottom:20 }}>
+            <button onClick={()=>navigate(-1)} disabled={offset===0}
+              style={{ flex:1, padding:"10px 0", border:"1.5px solid #e5e7eb", borderRadius:8, background:"#fff", fontSize:18, cursor:offset===0?"default":"pointer", opacity:offset===0?0.3:1 }}>←</button>
+            <button onClick={()=>{ setOffset(todayOffset); setVarIdx({}); }}
+              style={{ flex:2, padding:"10px 0", border:"1.5px solid #111827", borderRadius:8, background:isToday?"#111827":"#fff", color:isToday?"#fff":"#111827", fontSize:13, ...S.mono, letterSpacing:1, cursor:"pointer" }}>
+              VANDAAG
+            </button>
+            <button onClick={()=>navigate(1)} disabled={offset===27}
+              style={{ flex:1, padding:"10px 0", border:"1.5px solid #e5e7eb", borderRadius:8, background:"#fff", fontSize:18, cursor:offset===27?"default":"pointer", opacity:offset===27?0.3:1 }}>→</button>
+          </div>
+        </>
+      )}
 
       {/* Tabs */}
       <div style={{ display:"flex", borderRadius:10, overflow:"hidden", border:"1.5px solid #e5e7eb", marginBottom:20 }}>
         <button onClick={()=>setTab("food")} style={S.btn(tab==="food")}>🥦 Voeding</button>
-        <button onClick={()=>setTab("workout")} style={S.btn(tab==="workout")}>💪 Training</button>
+        {isDone
+          ? <button onClick={()=>setTab("pick")} style={S.btn(tab==="pick")}>🎯 Kies</button>
+          : <button onClick={()=>setTab("workout")} style={S.btn(tab==="workout")}>💪 Training</button>
+        }
       </div>
 
       {/* Food */}
@@ -246,6 +282,59 @@ export default function ChallengePlanner() {
               </a>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Pick a workout */}
+      {tab==="pick" && (
+        <div>
+          <div style={{ fontSize:12, color:"#9ca3af", ...S.mono, letterSpacing:1, marginBottom:12, textTransform:"uppercase" }}>Kies een type training</div>
+          <div style={{ display:"flex", gap:6, flexWrap:"wrap", marginBottom:20 }}>
+            {PICK_CATS.map(({ key, label, color }) => (
+              <button key={key} onClick={() => { setPickType(key); setExpanded(null); }}
+                style={{ padding:"7px 14px", border:"1.5px solid", borderRadius:20, fontSize:12,
+                  cursor:"pointer", ...S.mono, letterSpacing:0.5,
+                  background: pickType===key ? color : "#fff",
+                  color: pickType===key ? "#fff" : "#6b7280",
+                  borderColor: pickType===key ? color : "#e5e7eb" }}>
+                {label}
+              </button>
+            ))}
+          </div>
+          {allPickableWorkouts.filter(w => w.cat === pickType).map(wo => {
+            const key = `${wo.weekNum}-${wo.dayNum}`;
+            const isOpen = expanded === key;
+            return (
+              <div key={key} style={{ ...S.card, cursor:"pointer" }} onClick={() => setExpanded(isOpen ? null : key)}>
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
+                  <div>
+                    <div style={{ fontSize:10, ...S.mono, letterSpacing:2, color:wo.color, textTransform:"uppercase" }}>
+                      Week {wo.weekNum} · {wo.tag}
+                    </div>
+                    <div style={{ fontSize:15, fontWeight:600, color:"#111827", marginTop:2 }}>{wo.type}</div>
+                    {wo.note && <div style={{ fontSize:11, color:"#9ca3af", marginTop:2 }}>{wo.note}</div>}
+                  </div>
+                  <span style={{ color:"#9ca3af", fontSize:11, ...S.mono, paddingTop:2 }}>{isOpen ? "▲" : "▼"}</span>
+                </div>
+                {isOpen && (
+                  <div style={{ marginTop:10, borderTop:"1px solid #f0ece4", paddingTop:10 }}>
+                    {wo.exercises.map((ex, j) => (
+                      <div key={j} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
+                        <div>
+                          <div style={{ fontSize:13, color:"#111827" }}>{ex.name}</div>
+                          <div style={{ fontSize:11, color:"#9ca3af", ...S.mono }}>{ex.sets}</div>
+                        </div>
+                        <a href={`https://www.youtube.com/results?search_query=${encodeURIComponent(ex.q)}`} target="_blank" rel="noreferrer"
+                          style={{ fontSize:11, color:"#dc2626", ...S.mono, textDecoration:"none", border:"1px solid #fca5a5", borderRadius:6, padding:"3px 7px", background:"#fff7f7", whiteSpace:"nowrap" }}>
+                          ▶ video
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
 
