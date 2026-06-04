@@ -1,4 +1,4 @@
-// workoutsByWeek[0] = week 1, workoutsByWeek[1] = week 2, workoutsByWeek[2] = week 3, week 4 reuses week 3
+// workoutsByWeek[0] = week 1, workoutsByWeek[1] = week 2, workoutsByWeek[2] = week 3, workoutsByWeek[3] = week 4
 export const workoutsByWeek = [
   // ── WEEK 1 ──────────────────────────────────────────────────────────────
   [
@@ -144,6 +144,49 @@ export const workoutsByWeek = [
       {name:"Hip bridges",sets:"3×60 sec",q:"glute bridge exercise"},
       {name:"Leg raises",sets:"3×20",q:"leg raises exercise"},
       {name:"Crunches",sets:"3×30",q:"crunches exercise tutorial"},
+    ]},
+    { type:"Rust & herstel", tag:"Dag 7", color:"#6b7280", bg:"#f9fafb", exercises:[] },
+  ],
+  // ── WEEK 4 ──────────────────────────────────────────────────────────────
+  [
+    { type:"Mixed", tag:"Dag 1 · Strand", color:"#2563eb", bg:"#eff6ff", note:"2 rondes · All 20x reps · Finisher: Inchworm + bunnyhop, Tijgeren 20m", exercises:[
+      {name:"Tricepdips",sets:"2×20",q:"tricep dips exercise"},
+      {name:"Push-ups",sets:"2×20",q:"push ups exercise tutorial"},
+      {name:"Walking lunges",sets:"2×20",q:"walking lunges exercise"},
+      {name:"Jumping lunges",sets:"2×20",q:"jumping lunges exercise"},
+      {name:"Crunches",sets:"2×20",q:"crunches exercise tutorial"},
+      {name:"Short leg raises",sets:"2×20",q:"short leg raises exercise"},
+    ]},
+    { type:"Mixed", tag:"Dag 2", color:"#7c3aed", bg:"#f5f3ff", note:"2 rondes · All 20x reps · Finisher: 4 min interval slow run, ieder eind van minuut 20sec versnellen", exercises:[
+      {name:"Sit-ups",sets:"2×20",q:"sit up exercise tutorial"},
+      {name:"Marching man",sets:"2×20",q:"marching man exercise"},
+      {name:"Air squat",sets:"2×20",q:"squat exercise tutorial"},
+      {name:"Squat jump",sets:"2×20",q:"squat jumps exercise"},
+      {name:"Inch worm",sets:"2×20",q:"inchworm exercise tutorial"},
+    ]},
+    { type:"Mixed", tag:"Dag 3", color:"#dc2626", bg:"#fef2f2", note:"3 rondes · Finisher: Plank to squat 20x", exercises:[
+      {name:"Decline push-up (use chair)",sets:"3×6",q:"decline push-ups exercise"},
+      {name:"Plank shoulder taps",sets:"3×40",q:"plank shoulder taps"},
+      {name:"Hold voorligstand",sets:"3×60 sec",q:"plank exercise tutorial"},
+      {name:"Sideplank dips",sets:"3×20 LR",q:"side plank hip dips exercise"},
+      {name:"Burpee",sets:"3×10",q:"burpee exercise tutorial"},
+    ]},
+    { type:"Mixed TRX · Buddy workout", tag:"Dag 4 · Duinen", color:"#2563eb", bg:"#eff6ff", note:"10:15 Duindamse slag Piet Florisdal", exercises:[] },
+    { type:"Mixed · on time!", tag:"Dag 5", color:"#dc2626", bg:"#fef2f2", note:"3 rondes · 60 sec to the max · Finisher: Slow run 10 minutes non-stop", exercises:[
+      {name:"Plank downdog to toe tap",sets:"60s",q:"plank downdog to toe tap exercise"},
+      {name:"Tricepdip",sets:"60s",q:"tricep dips exercise"},
+      {name:"Crunches",sets:"60s",q:"crunches exercise tutorial"},
+      {name:"Bicycle crunch",sets:"60s",q:"bicycle crunch exercise"},
+      {name:"Freeze squat",sets:"60s",q:"freeze squat exercise"},
+      {name:"Push-ups wide grip",sets:"60s",q:"wide grip push-ups exercise"},
+    ]},
+    { type:"Mixed Full body · Final Day 💪", tag:"Dag 6", color:"#059669", bg:"#ecfdf5", note:"2 rondes · Alles nonstop: 4× 30 sec / 20 sec rest · Finisher: 3 min Voorligstand hoog→lage plank iedere 30 sec, 4× 20 sec Burpees", exercises:[
+      {name:"Push-ups",sets:"4×30s",q:"push ups exercise tutorial"},
+      {name:"Reverse plank",sets:"4×30s",q:"reverse plank exercise"},
+      {name:"Tricepdip",sets:"4×30s",q:"tricep dips exercise"},
+      {name:"Air squats",sets:"4×30s",q:"squat exercise tutorial"},
+      {name:"Leg raise",sets:"4×30s",q:"leg raises exercise"},
+      {name:"Burpees",sets:"4×30s",q:"burpee exercise tutorial"},
     ]},
     { type:"Rust & herstel", tag:"Dag 7", color:"#6b7280", bg:"#f9fafb", exercises:[] },
   ],
